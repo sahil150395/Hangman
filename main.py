@@ -1,66 +1,15 @@
 import random
+import hangman_art
+import hangman_words
 
-stages = ['''
-  +---+
-  |   |
-  O   |
- /|\  |
- / \  |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
- /    |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
-=========''', '''
-  +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
-      |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========
-''']
+stages = hangman_art.stages
 
-word_list = ["aardvark", "baboon", "camel"]
+word_list = hangman_words.word_list
 chosen_word = random.choice(word_list)
 word_length = len(chosen_word)
 lives = 6
+
+print(hangman_art.logo)
 
 display = []
 for _ in range(word_length):
@@ -73,24 +22,27 @@ isOver = False
 
 while not isOver:
     guess = input("Guess a letter: ").lower()
+
+    if guess in display:
+        print(f"{guess} already guessed")
     for i in range(word_length):
         letter = chosen_word[i]
         if letter == guess:
             display[i] = letter
     
     if guess not in chosen_word:
+        print(f"{guess} does not exist in the word")
         lives -= 1
+        if lives == 0:
+            isOver = True
+            print("You Lose!")
     
     print(f"{' '.join(display)}")
-    print(f"Lives: {lives}")
     print(stages[lives])
 
     if "_" not in display:
         isOver = True
         print("You Win!")
-    elif lives == 0:
-        isOver = True
-        print("You Lose!")
 
 
 
@@ -120,3 +72,11 @@ while not isOver:
     #Then reduce 'lives' by 1. 
     #If lives goes down to 0 then the game should stop and it should print "You lose."
 #TODO-3: - print the ASCII art from 'stages' that corresponds to the current number of 'lives' the user has remaining.
+
+#Step 5
+#TODO-1: - Update the word list to use the 'word_list' from hangman_words.py
+#Delete this line: word_list = ["ardvark", "baboon", "camel"]
+#TODO-2: - Import the stages from hangman_art.py and make this error go away.
+#TODO-3: - Import the logo from hangman_art.py and print it at the start of the game.
+#TODO-4: - If the user has entered a letter they've already guessed, print the letter and let them know.
+#TODO-5: - If the letter is not in the chosen_word, print out the letter and let them know it's not in the word.
